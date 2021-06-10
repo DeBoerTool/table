@@ -43,7 +43,7 @@
         "stat": "psalm",
         "check": [
             "@coverage",
-            "@state"
+            "@stat"
         ]
     },
     "config": {
