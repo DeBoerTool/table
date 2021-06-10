@@ -20,6 +20,7 @@ class Table implements JsonSerializable, Countable, IteratorAggregate,
     public function __construct (Row ...$rows)
     {
         $this->stack = [];
+        $this->length = 0;
 
         foreach ($rows as $row) {
             $this->push($row);

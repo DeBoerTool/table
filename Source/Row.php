@@ -32,9 +32,14 @@ class Row implements JsonSerializable, Countable, IteratorAggregate,
      */
     public static function fromArray (array $values): self
     {
-        $map = fn ($value): Cell => Cell::make($value);
-
-        return new self(...array_map($map, $values));
+        return new self(...array_map(
+            /**
+             * @param array|string|int|float|bool $value
+             * @throws \JsonException
+             */
+            fn ($value): Cell => Cell::make($value),
+            $values,
+        ));
     }
 
     public function all (): array

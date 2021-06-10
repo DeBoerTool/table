@@ -25,7 +25,7 @@
       "ext-pcov": "*",
       "larapack/dd": "^1.1",
       "phpunit/phpunit": "^9.0",
-      "vimeo/psalm": "^3.1"
+      "vimeo/psalm": "^4.7.3"
     },
     "autoload": {
         "psr-4": {
@@ -43,7 +43,7 @@
         "stat": "psalm",
         "check": [
             "@coverage",
-            "@stat -- --show-info=true"
+            "@stat --show-info=true"
         ]
     },
     "config": {
