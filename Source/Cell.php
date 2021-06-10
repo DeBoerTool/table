@@ -41,6 +41,13 @@ class Cell implements JsonSerializable
         return $this->value;
     }
 
+    public function valueWithDefault (string $default): string
+    {
+        return $this->value() === ''
+            ? $default
+            : $this->value;
+    }
+
     public function equals (string $value): bool
     {
         return $this->value === $value;

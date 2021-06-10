@@ -16,6 +16,16 @@ class CellTest extends UnitTestCase
     }
 
     /** @test */
+    public function getting_a_value_with_default (): void
+    {
+        $default = $this->rs(5);
+        $cell = new Cell('');
+
+        $this->assertSame('', $cell->value());
+        $this->assertSame($default, $cell->valueWithDefault($default));
+    }
+
+    /** @test */
     public function equality (): void
     {
         $str = $this->rs(16);
