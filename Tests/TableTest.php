@@ -3,6 +3,7 @@
 namespace Dbt\Table\Tests;
 
 use Dbt\Table\Cell;
+use Dbt\Table\Exceptions\NoSuchCellException;
 use Dbt\Table\Row;
 use Dbt\Table\Table;
 use Exception;
@@ -47,9 +48,12 @@ class TableTest extends UnitTestCase
         $this->assertCount(2, $table);
         $this->assertNotSame($table[0], $table[1]);
         $this->assertNotSame($table[0][0], $table[1][0]);
-        $this->assertNotSame($table->get(0), $table->get(1));
-        $this->assertNotSame($table->get(0)->get(0), $table->get(1)->get(0));
-        $this->assertSame($table[0], $table->get(0));
+        $this->assertNotSame($table->row(0), $table->row(1));
+        $this->assertNotSame(
+            $table->row(0)->cell(0),
+            $table->row(1)->cell(0)
+        );
+        $this->assertSame($table[0], $table->row(0));
     }
 
     /** @test */
@@ -100,6 +104,50 @@ class TableTest extends UnitTestCase
     }
 
     /** @test */
+    public function finding_a_row_by_cell_value (): void
+    {
+        $table = Table::fromArray([
+            ['0', 'y', '0'],
+            ['1', 'n', '1'],
+            ['2', 'y', '2'],
+            ['3', 'n', '3'],
+            ['4', 'y', '4'],
+        ]);
+
+        $this->assertSame(
+            '2',
+            $table->findByCell(1, 'y')->cell(0)->value(),
+        );
+
+        $this->expectException(NoSuchCellException::class);
+
+        $table->findByCell(1, '');
+    }
+
+    /** @test */
+    public function finding_a_row_by_multiple_cell_values (): void
+    {
+        $table = Table::fromArray([
+            ['0', 'y', '0', 'x'],
+            ['1', 'n', '1', 'y'],
+            ['2', 'y', '2', 'x'],
+            ['3', 'n', '3', 'y'],
+            ['4', 'y', '4', 'x'],
+        ]);
+
+        $row = $table->findByMultipleCells([[1, 'y'], [3, 'x']]);
+
+        $this->assertSame('2', $row->cell(0)->value());
+
+        $this->expectException(NoSuchCellException::class);
+
+        $table->findByMultipleCells([
+            [1, 'p'],
+            [3, 'q'],
+        ]);
+    }
+
+    /** @test */
     public function json_serialize (): void
     {
         $str = $this->rs(10);
@@ -139,7 +187,7 @@ class TableTest extends UnitTestCase
     {
         $table = new Table(new Row(new Cell('')));
 
-        $this->assertSame($table[0], $table->get(0));
+        $this->assertSame($table[0], $table->row(0));
     }
 
     /** @test */

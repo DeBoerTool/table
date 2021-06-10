@@ -5,9 +5,11 @@ namespace Dbt\Table;
 use ArrayAccess;
 use ArrayIterator;
 use Countable;
+use Dbt\Table\Exceptions\NoSuchCellException;
 use Exception;
 use IteratorAggregate;
 use JsonSerializable;
+use LengthException;
 use Traversable;
 
 class Table implements JsonSerializable, Countable, IteratorAggregate,
@@ -49,7 +51,7 @@ class Table implements JsonSerializable, Countable, IteratorAggregate,
         }
 
         if (($length = count($row)) !== $this->length) {
-            throw new \LengthException(sprintf(
+            throw new LengthException(sprintf(
                 'Expected row length of %s, got %s.',
                 $this->length,
                 $length,
@@ -89,6 +91,44 @@ class Table implements JsonSerializable, Countable, IteratorAggregate,
         unset($stack[0]);
 
         return new Table(...$stack);
+    }
+
+    /**
+     * @throws \Dbt\Table\Exceptions\NoSuchCellException
+     */
+    public function findByCell (int $cellIndex, string $value): Row
+    {
+        foreach ($this->exceptHeaders() as $row) {
+            if ($row->cell($cellIndex)->equals($value)) {
+                return $row;
+            }
+        }
+
+        throw NoSuchCellException::of([[$cellIndex, $value]]);
+    }
+
+    /**
+     * @param array<array{0: int, 1: string}> $indexesAndValues
+     * @return \Dbt\Table\Row
+     * @throws \Dbt\Table\Exceptions\NoSuchCellException
+     */
+    public function findByMultipleCells (array $indexesAndValues): Row
+    {
+        foreach ($this->exceptHeaders() as $row) {
+            $matches = 0;
+
+            foreach ($indexesAndValues as $tuple) {
+                if ($row->get($tuple[0])->equals($tuple[1])) {
+                    $matches++;
+                }
+            }
+
+            if ($matches === count($indexesAndValues)) {
+                return $row;
+            }
+        }
+
+        throw NoSuchCellException::of($indexesAndValues);
     }
 
     public function jsonSerialize (): array
