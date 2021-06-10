@@ -76,21 +76,27 @@ class TableTest extends UnitTestCase
     }
 
     /** @test */
-    public function getting_all_rows_except_the_header_row (): void
+    public function getting_rows_without_headers_as_a_new_table (): void
     {
-        $table = Table::fromArray([
+        $fullTable = Table::fromArray([
             ['row 0 / cell 0'],
             ['row 1 / cell 0'],
             ['row 2 / cell 0'],
         ]);
 
-        $this->assertCount(3, $table);
+        $this->assertCount(3, $fullTable);
 
-        $rows = $table->exceptHeaders();
+        $table = $fullTable->exceptHeaders();
 
-        $this->assertCount(2, $rows);
-        $this->assertSame($rows[0][0]->value(), 'row 1 / cell 0');
-        $this->assertSame($rows[1][0]->value(), 'row 2 / cell 0');
+        $this->assertCount(2, $table);
+        $this->assertSame(
+            $table->row(0)->cell(0)->value(),
+            'row 1 / cell 0'
+        );
+        $this->assertSame(
+            $table->row(1)->cell(0)->value(),
+            'row 2 / cell 0'
+        );
     }
 
     /** @test */
