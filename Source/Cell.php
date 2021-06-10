@@ -41,6 +41,11 @@ class Cell implements JsonSerializable
         return $this->value;
     }
 
+    public function equals (string $value): bool
+    {
+        return $this->value === $value;
+    }
+
     /**
      * @return string|array
      * @throws \JsonException

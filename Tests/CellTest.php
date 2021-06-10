@@ -16,6 +16,17 @@ class CellTest extends UnitTestCase
     }
 
     /** @test */
+    public function equality (): void
+    {
+        $str = $this->rs(16);
+        $cell = new Cell($str);
+
+        $this->assertFalse($cell->equals($this->rs(16)));
+        $this->assertTrue($cell->equals($cell->value()));
+        $this->assertTrue($cell->equals($cell));
+    }
+
+    /** @test */
     public function getting_a_json_value (): void
     {
         $arr = [$this->rs(4) => $this->rs(16)];
