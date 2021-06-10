@@ -73,6 +73,24 @@ class TableTest extends UnitTestCase
     }
 
     /** @test */
+    public function getting_all_rows_except_the_header_row (): void
+    {
+        $table = Table::fromArray([
+            ['row 0 / cell 0'],
+            ['row 1 / cell 0'],
+            ['row 2 / cell 0'],
+        ]);
+
+        $this->assertCount(3, $table);
+
+        $rows = $table->exceptHeaders();
+
+        $this->assertCount(2, $rows);
+        $this->assertSame($rows[0][0]->value(), 'row 1 / cell 0');
+        $this->assertSame($rows[1][0]->value(), 'row 2 / cell 0');
+    }
+
+    /** @test */
     public function json_serialize (): void
     {
         $str = $this->rs(10);

@@ -73,6 +73,18 @@ class Table implements JsonSerializable, Countable, IteratorAggregate,
         return $this->stack[0];
     }
 
+    /**
+     * @return \Dbt\Table\Row[]
+     */
+    public function exceptHeaders (): array
+    {
+        $stack = $this->stack;
+
+        unset($stack[0]);
+
+        return array_values($stack);
+    }
+
     public function jsonSerialize (): array
     {
         return $this->all();
