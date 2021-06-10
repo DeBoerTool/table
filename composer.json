@@ -40,7 +40,6 @@
     "scripts": {
         "test": "phpunit --no-coverage",
         "coverage": "phpunit --coverage-html Reports/coverage",
-        "pcov": "php -d pcov.enabled=1 vendor/phpunit/phpunit/phpunit --coverage-html Reports/coverage",
         "stat": "psalm",
         "migrate": "phpunit --migrate-configuration"
     },
