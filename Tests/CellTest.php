@@ -37,6 +37,33 @@ class CellTest extends UnitTestCase
     }
 
     /** @test */
+    public function casting_to_a_float (): void
+    {
+        $str = '-0.0001';
+        $cell = new Cell($str);
+
+        $this->assertSame(-0.0001, $cell->toFloat());
+    }
+
+    /** @test */
+    public function casting_to_an_int (): void
+    {
+        $str = '9.99';
+        $cell = new Cell($str);
+
+        $this->assertSame(9, $cell->toInt());
+    }
+
+    /** @test */
+    public function casting_to_a_bool (): void
+    {
+        $str = '0';
+        $cell = new Cell($str);
+
+        $this->assertSame(false, $cell->toBool());
+    }
+
+    /** @test */
     public function getting_a_json_value (): void
     {
         $arr = [$this->rs(4) => $this->rs(16)];

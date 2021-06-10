@@ -61,6 +61,21 @@ class Cell implements JsonSerializable
         return $this->value === (string) $value;
     }
 
+    public function toFloat (): float
+    {
+        return (float) $this->value();
+    }
+
+    public function toInt (): int
+    {
+        return (int) $this->value();
+    }
+
+    public function toBool (): bool
+    {
+        return (bool) $this->value;
+    }
+
     /**
      * @return string|array
      * @throws \JsonException
