@@ -4,6 +4,7 @@ namespace Dbt\Table\Tests;
 
 use Dbt\Table\Cell;
 use Dbt\Table\Row;
+use Exception;
 
 class RowTest extends UnitTestCase
 {
@@ -28,8 +29,8 @@ class RowTest extends UnitTestCase
 
         $this->assertCount(2, $row);
         $this->assertNotSame($row[0], $row[1]);
-        $this->assertNotSame($row->get(0), $row->get(1));
-        $this->assertSame($row[0], $row->get(0));
+        $this->assertNotSame($row->cell(0), $row->cell(1));
+        $this->assertSame($row[0], $row->cell(0));
     }
 
     /** @test */
@@ -101,7 +102,7 @@ class RowTest extends UnitTestCase
     /** @test */
     public function attempting_to_set_an_index (): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
         $row = new Row();
 
@@ -111,7 +112,7 @@ class RowTest extends UnitTestCase
     /** @test */
     public function attempting_to_unset_an_index (): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
         $row = new Row();
 

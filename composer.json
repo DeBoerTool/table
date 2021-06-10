@@ -41,7 +41,10 @@
         "test": "phpunit --no-coverage",
         "coverage": "phpunit --coverage-html Reports/coverage",
         "stat": "psalm",
-        "migrate": "phpunit --migrate-configuration"
+        "check": [
+            "@coverage",
+            "@state"
+        ]
     },
     "config": {
         "sort-packages": true,

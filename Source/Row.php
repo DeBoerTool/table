@@ -47,7 +47,15 @@ class Row implements JsonSerializable, Countable, IteratorAggregate,
         $this->stack[] = clone $cell;
     }
 
+    /**
+     * @deprecated
+     */
     public function get (int $index): Cell
+    {
+        return $this->cell($index);
+    }
+
+    public function cell (int $index): Cell
     {
         return $this->stack[$index];
     }

@@ -63,7 +63,15 @@ class Table implements JsonSerializable, Countable, IteratorAggregate,
         return $this->stack;
     }
 
+    /**
+     * @deprecated
+     */
     public function get (int $index): Row
+    {
+        return $this->row($index);
+    }
+
+    public function row (int $index): Row
     {
         return $this->stack[$index];
     }

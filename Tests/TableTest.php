@@ -5,6 +5,8 @@ namespace Dbt\Table\Tests;
 use Dbt\Table\Cell;
 use Dbt\Table\Row;
 use Dbt\Table\Table;
+use Exception;
+use LengthException;
 
 class TableTest extends UnitTestCase
 {
@@ -12,16 +14,17 @@ class TableTest extends UnitTestCase
     public function a_table_is_a_list_of_rows (): void
     {
         $rows = [new Row(new Cell('')), new Row(new Cell(''))];
-        $row = new Table(...$rows);
+        $table = new Table(...$rows);
 
-        $this->assertCount(2, $row);
-        $this->assertCount(2, $row->all());
+        $this->assertCount(2, $table);
+        $this->assertCount(2, $table->all());
+        $this->assertInstanceOf(Row::class, $table->row(0));
     }
 
     /** @test */
     public function the_first_row_defines_the_expected_length (): void
     {
-        $this->expectException(\LengthException::class);
+        $this->expectException(LengthException::class);
 
         $rows = [
             new Row(new Cell('')),
@@ -136,7 +139,7 @@ class TableTest extends UnitTestCase
     /** @test */
     public function attempting_to_set_an_index (): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
         $table = new Table();
 
@@ -146,7 +149,7 @@ class TableTest extends UnitTestCase
     /** @test */
     public function attempting_to_unset_an_index (): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
 
         $table = new Table();
 
