@@ -1,11 +1,12 @@
 {
-    "name": "dbt/php-project",
-    "description": "PHP Project Scaffolding",
+    "name": "dbt/table",
+    "description": "Objects to represent fixed-length tabular data",
     "keywords": [
         "dbt",
-        "php"
+        "php",
+        "table"
     ],
-    "homepage": "https://github.com/dbt/php-project",
+    "homepage": "https://github.com/dbt/table",
     "license": "MIT",
     "type": "project",
     "authors": [
@@ -16,30 +17,32 @@
         }
     ],
     "require": {
-        "php": "^7.2"
+        "php": "^7.4",
+        "ext-json": "*"
     },
     "require-dev": {
       "friendsofphp/php-cs-fixer": "^2.15",
       "ext-pcov": "*",
       "larapack/dd": "^1.1",
-      "phpunit/phpunit": "^7.0",
+      "phpunit/phpunit": "^9.0",
       "vimeo/psalm": "^3.1"
     },
     "autoload": {
         "psr-4": {
-            "Dbt\\PhpProject\\": "Source"
+            "Dbt\\Table\\": "Source"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Dbt\\PhpProject\\Tests\\": "Tests"
+            "Dbt\\Table\\Tests\\": "Tests"
         }
     },
     "scripts": {
         "test": "phpunit --no-coverage",
         "coverage": "phpunit --coverage-html Reports/coverage",
         "pcov": "php -d pcov.enabled=1 vendor/phpunit/phpunit/phpunit --coverage-html Reports/coverage",
-        "stat": "psalm"
+        "stat": "psalm",
+        "migrate": "phpunit --migrate-configuration"
     },
     "config": {
         "sort-packages": true,

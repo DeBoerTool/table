@@ -1,6 +1,6 @@
 <?php
 
-namespace Dbt\PhpProject\Tests;
+namespace Dbt\Table\Tests;
 
 use PHPUnit\Framework\TestCase;
 
