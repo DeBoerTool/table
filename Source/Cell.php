@@ -2,6 +2,7 @@
 
 namespace Dbt\Table;
 
+use Closure;
 use JsonSerializable;
 
 class Cell implements JsonSerializable
@@ -48,9 +49,16 @@ class Cell implements JsonSerializable
             : $this->value;
     }
 
-    public function equals (string $value): bool
+    /**
+     * @param \Closure|mixed $value
+     */
+    public function equals ($value): bool
     {
-        return $this->value === $value;
+        if ($value instanceof Closure) {
+            return $value($this->value);
+        }
+
+        return $this->value === (string) $value;
     }
 
     /**

@@ -4,6 +4,7 @@ namespace Dbt\Table;
 
 use ArrayAccess;
 use ArrayIterator;
+use Closure;
 use Countable;
 use Dbt\Table\Exceptions\NoSuchCellException;
 use Exception;
@@ -94,10 +95,12 @@ class Table implements JsonSerializable, Countable, IteratorAggregate,
     }
 
     /**
+     * @param \Closure|string $value
      * @throws \Dbt\Table\Exceptions\NoSuchCellException
      */
-    public function findByCell (int $cellIndex, string $value): Row
+    public function findByCell (int $cellIndex, $value): Row
     {
+        /** @var \Dbt\Table\Row $row */
         foreach ($this->exceptHeaders() as $row) {
             if ($row->cell($cellIndex)->equals($value)) {
                 return $row;
@@ -108,7 +111,7 @@ class Table implements JsonSerializable, Countable, IteratorAggregate,
     }
 
     /**
-     * @param array<array{0: int, 1: string}> $indexesAndValues
+     * @param array<array{0: int, 1: \Closure|string}> $indexesAndValues
      * @return \Dbt\Table\Row
      * @throws \Dbt\Table\Exceptions\NoSuchCellException
      */

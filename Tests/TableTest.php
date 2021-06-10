@@ -125,7 +125,61 @@ class TableTest extends UnitTestCase
     }
 
     /** @test */
+    public function finding_a_row_by_cell_value_with_closure (): void
+    {
+        $table = Table::fromArray([
+            ['0', '3.3', '0'],
+            ['1', '1.1', '1'],
+            ['2', '3.3', '2'],
+            ['3', '4.4', '3'],
+            ['4', '5.5', '4'],
+        ]);
+
+        $floatEquals = fn (string $value): bool => ((float) $value) === 3.3;
+        $intEquals = fn (string $value): bool => ((int) $value) === 3;
+
+        $this->assertSame(
+            '2',
+            $table->findByCell(1, $floatEquals)->cell(0)->value(),
+        );
+
+        $this->assertSame(
+            '2',
+            $table->findByCell(1, $intEquals)->cell(0)->value(),
+        );
+    }
+
+    /** @test */
     public function finding_a_row_by_multiple_cell_values (): void
+    {
+        $table = Table::fromArray([
+            ['0', '3.3', '0', ''],
+            ['1', '1.1', '1', 'n'],
+            ['2', '3.3', '2', ''],
+            ['3', '4.4', '3', 'n'],
+            ['4', '5.5', '4', 'n'],
+        ]);
+
+        $intCompare = fn (string $value): bool => ((int) $value) === 3;
+        $boolCompare = fn (string $value): bool => !$value;
+
+        $row = $table->findByMultipleCells([
+            [1, $intCompare],
+            [3, $boolCompare],
+        ]);
+
+        $this->assertSame('2', $row->cell(0)->value());
+
+        $this->expectException(NoSuchCellException::class);
+
+        $table->findByMultipleCells([
+            [1, fn ($v) => $v === 'some string'],
+            [3, 'q'],
+        ]);
+    }
+
+    /** @test */
+    public function finding_a_row_by_multiple_cell_values_with_closures (): void
     {
         $table = Table::fromArray([
             ['0', 'y', '0', 'x'],
