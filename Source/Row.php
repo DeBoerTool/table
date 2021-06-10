@@ -65,6 +65,18 @@ class Row implements JsonSerializable, Countable, IteratorAggregate,
         return $this->stack[$index];
     }
 
+    public function toArray (): array
+    {
+        return array_map(
+            /**
+             * @return string|array
+             * @throws \JsonException
+             */
+            fn (Cell $cell) => $cell->jsonSerialize(),
+            $this->stack,
+        );
+    }
+
     public function jsonSerialize (): array
     {
         return $this->all();

@@ -46,6 +46,16 @@ class RowTest extends UnitTestCase
     }
 
     /** @test */
+    public function casting_to_an_array (): void
+    {
+        $cells = ['test', ['an array']];
+
+        $row = Row::fromArray($cells);
+
+        $this->assertSame($cells, $row->toArray());
+    }
+
+    /** @test */
     public function json_serialize (): void
     {
         $str = $this->rs(10);

@@ -202,6 +202,19 @@ class TableTest extends UnitTestCase
     }
 
     /** @test */
+    public function casting_to_an_array (): void
+    {
+        $rows = [
+            ['my string', ['array']],
+            ['also', 'this'],
+        ];
+
+        $table = Table::fromArray($rows);
+
+        $this->assertSame($rows, $table->toArray());
+    }
+
+    /** @test */
     public function json_serialize (): void
     {
         $str = $this->rs(10);

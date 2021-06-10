@@ -134,6 +134,14 @@ class Table implements JsonSerializable, Countable, IteratorAggregate,
         throw NoSuchCellException::of($indexesAndValues);
     }
 
+    public function toArray (): array
+    {
+        return array_map(
+            fn (Row $row): array => $row->toArray(),
+            $this->stack
+        );
+    }
+
     public function jsonSerialize (): array
     {
         return $this->all();
